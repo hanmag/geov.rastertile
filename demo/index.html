@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GEOV RasterTile Demo</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #001;
+        }
+
+        #main {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main"></div>
+
+    <script src="http://localhost/three.js/build/three.min.js"></script>
+    <script src="http://localhost/geov.js/dist/geov.js"></script>
+    <script src="../build/geov.rastertile.js"></script>
+    <script>
+        const earth = new geov.Earth(document.getElementById('main'), {
+            aurora: true,
+            galaxy: 'http://localhost/geov.js/textures/galaxy_starfield.png',
+            atmosphere: 'http://localhost/geov.js/textures/fair_clouds_4k.png'
+        });
+        earth.addLayer(new geov.TileLayer('raster', {
+            type: 'bing'
+        }));
+    </script>
+</body>
+
+</html>

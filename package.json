@@ -1,0 +1,46 @@
+{
+  "name": "geov.rastertile",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/TileLayer.js",
+  "scripts": {
+    "watch": "rollup -c -w",
+    "build": "rollup -c",
+    "prepublish": "rollup -c && uglifyjs build/geov.rastertile.js -cm --preamble > build/geov.rastertile.min.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "package.json",
+    "LICENSE",
+    "README.md",
+    "build/geov.rastertile.js",
+    "build/geov.rastertile.min.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hanmag/geov.rastertile.git"
+  },
+  "keywords": [
+    "geov.js",
+    "rastertile"
+  ],
+  "author": "Daemon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hanmag/geov.rastertile/issues"
+  },
+  "homepage": "https://github.com/hanmag/geov.rastertile#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-proto-to-assign": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "geov.js": "^0.0.2",
+    "rollup": "^0.51.8",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-local-resolve": "^1.0.7",
+    "rollup-watch": "^4.3.1",
+    "three": "^0.89.0",
+    "uglify-js": "^3.3.5"
+  }
+}
