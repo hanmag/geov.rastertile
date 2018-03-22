@@ -28,8 +28,7 @@ export class TileLayer extends geov.Layer {
             const radian = this.earth.getRadian();
             const pitch = this.earth.getPitch();
             const bearing = this.earth.getBearing();
-
-            const result = this.tileGrid.getVisibleTiles(Math.round(Math.min(Math.max(3, zoom), 18)),
+            const result = this.tileGrid.getVisibleTiles(Math.round(Math.max(zoom + 1, 2)),
                 radian.y, radian.x, pitch, bearing);
 
             if (result) {

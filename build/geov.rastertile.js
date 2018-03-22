@@ -341,15 +341,15 @@ function calcRange(centerTile, pitch, bearing) {
     // 纬度偏移量 ( 0 ~ 1 )，越靠近高纬度，可视切片数量越大
     var offsetY = Math.abs((centerTile.row + 0.5) / centerTile.size - 0.5) * 2;
     // 显示级别权值 ( 0 | 1 )，级别靠近最大或最小时为1
-    var zoomRatio = centerTile.zoom < 4 || centerTile.zoom > 15 ? 1 : 0;
+    var zoomRatio = centerTile.zoom < 4 ? 1 : centerTile.zoom / 15;
     // 倾斜度 ( 0 ~ 1 )，倾斜度越大，可视切片数量越大
     var pitchRatio = Math.min(90 / (90 - pitch), 2) - 1;
     // 转向角权值 ( 0 ~ 1 )，视线指向赤道时转向角权值小，视线指向两极时转向角权值大
     var bearingRatio = 0.5 + Math.cos(bearing) * (0.5 - (centerTile.row + 0.5) / centerTile.size);
     // 可见行数
-    var rowCount = Math.round(0.5 + zoomRatio * 2 + offsetY * 5 + pitchRatio * 4 + bearingRatio * 1.2 + Math.abs(Math.sin(bearing)) * 1.2);
+    var rowCount = Math.round(1 + zoomRatio * 2 + offsetY * 4 + pitchRatio * 4 + bearingRatio * 1.2 + Math.abs(Math.sin(bearing)) * 1.2);
     // 可见列数
-    var colCount = Math.round(0.5 + zoomRatio * 2 + offsetY * 5 + pitchRatio * 3 + bearingRatio * 1.2 + Math.abs(Math.cos(bearing)) * 1.2);
+    var colCount = Math.round(1 + zoomRatio * 2.5 + offsetY * 4 + pitchRatio * 3 + bearingRatio * 1.2 + Math.abs(Math.cos(bearing)) * 1.2);
     // 中心行列号
     var centerRow = centerTile.row;
     var centerCol = centerTile.col;
@@ -485,8 +485,7 @@ var TileLayer = function (_geov$Layer) {
                 var radian = this.earth.getRadian();
                 var pitch = this.earth.getPitch();
                 var bearing = this.earth.getBearing();
-
-                var result = this.tileGrid.getVisibleTiles(Math.round(Math.min(Math.max(3, zoom), 18)), radian.y, radian.x, pitch, bearing);
+                var result = this.tileGrid.getVisibleTiles(Math.round(Math.max(zoom + 1, 2)), radian.y, radian.x, pitch, bearing);
 
                 if (result) {
                     if (this.tiles) {
