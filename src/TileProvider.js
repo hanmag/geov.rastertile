@@ -1,6 +1,7 @@
 import * as geov from 'geov';
 
 export default {
+    // register map provider
     setMapType: function (type) {
         this.type = type;
     },

@@ -54,6 +54,7 @@ var cache = {
 };
 
 var tileProvider = {
+    // register map provider
     setMapType: function setMapType(type) {
         this.type = type;
     },
@@ -446,6 +447,12 @@ var TileGrid = function () {
     return TileGrid;
 }();
 
+function mapZoomToTileZoom(mapZoom) {
+    if (mapZoom < 1) return 2;
+    if (mapZoom < 8) return Math.max(3, mapZoom + 1);
+    return mapZoom;
+}
+
 var TileLayer = function (_geov$Layer) {
     inherits(TileLayer, _geov$Layer);
 
@@ -485,7 +492,7 @@ var TileLayer = function (_geov$Layer) {
                 var radian = this.earth.getRadian();
                 var pitch = this.earth.getPitch();
                 var bearing = this.earth.getBearing();
-                var result = this.tileGrid.getVisibleTiles(Math.round(Math.max(zoom + 1, 2)), radian.y, radian.x, pitch, bearing);
+                var result = this.tileGrid.getVisibleTiles(Math.round(mapZoomToTileZoom(zoom)), radian.y, radian.x, pitch, bearing);
 
                 if (result) {
                     if (this.tiles) {
@@ -526,7 +533,7 @@ var TileLayer = function (_geov$Layer) {
                 }
             });
 
-            if (loadingCount < this.tiles.length * 0.2) {
+            if (loadingCount < this.tiles.length * 0.1) {
                 this.tiles.forEach(function (tile) {
                     if (!_this3.tilesInScene[tile.id] && tile.state === 'loaded') {
                         _this3.group.add(tile.mesh);
@@ -535,7 +542,7 @@ var TileLayer = function (_geov$Layer) {
                 });
 
                 var _self = this;
-                // remove all unvisible tiles when 80% loaded
+                // remove all unvisible tiles when 90% loaded
                 Object.keys(this.tilesInScene).forEach(function (tileId) {
                     if (!_self.tileGrid.isVisible(tileId)) {
                         _this3.group.remove(_self.tilesInScene[tileId]);
@@ -550,7 +557,30 @@ var TileLayer = function (_geov$Layer) {
     return TileLayer;
 }(geov.Layer);
 
-exports.TileLayer = TileLayer;
+var RasterTileLayer = function (_TileLayer) {
+  inherits(RasterTileLayer, _TileLayer);
+
+  function RasterTileLayer() {
+    classCallCheck(this, RasterTileLayer);
+    return possibleConstructorReturn(this, (RasterTileLayer.__proto__ || Object.getPrototypeOf(RasterTileLayer)).apply(this, arguments));
+  }
+
+  return RasterTileLayer;
+}(TileLayer);
+
+var VectorTileLayer = function (_TileLayer) {
+  inherits(VectorTileLayer, _TileLayer);
+
+  function VectorTileLayer() {
+    classCallCheck(this, VectorTileLayer);
+    return possibleConstructorReturn(this, (VectorTileLayer.__proto__ || Object.getPrototypeOf(VectorTileLayer)).apply(this, arguments));
+  }
+
+  return VectorTileLayer;
+}(TileLayer);
+
+exports.RasterTileLayer = RasterTileLayer;
+exports.VectorTileLayer = VectorTileLayer;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

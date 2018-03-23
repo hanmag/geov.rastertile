@@ -3,7 +3,13 @@ import * as THREE from 'three';
 import TileGrid from './TileGrid';
 import tileProvider from './TileProvider';
 
-export class TileLayer extends geov.Layer {
+function mapZoomToTileZoom(mapZoom) {
+    if (mapZoom < 1) return 2;
+    if (mapZoom < 8) return Math.max(3, mapZoom + 1);
+    return mapZoom;
+}
+
+export default class TileLayer extends geov.Layer {
     constructor(id, options) {
         super(id);
 
@@ -28,7 +34,7 @@ export class TileLayer extends geov.Layer {
             const radian = this.earth.getRadian();
             const pitch = this.earth.getPitch();
             const bearing = this.earth.getBearing();
-            const result = this.tileGrid.getVisibleTiles(Math.round(Math.max(zoom + 1, 2)),
+            const result = this.tileGrid.getVisibleTiles(Math.round(mapZoomToTileZoom(zoom)),
                 radian.y, radian.x, pitch, bearing);
 
             if (result) {
@@ -67,7 +73,7 @@ export class TileLayer extends geov.Layer {
             }
         });
 
-        if (loadingCount < this.tiles.length * 0.2) {
+        if (loadingCount < this.tiles.length * 0.1) {
             this.tiles.forEach(tile => {
                 if (!this.tilesInScene[tile.id] && tile.state === 'loaded') {
                     this.group.add(tile.mesh);
@@ -76,7 +82,7 @@ export class TileLayer extends geov.Layer {
             });
 
             const _self = this;
-            // remove all unvisible tiles when 80% loaded
+            // remove all unvisible tiles when 90% loaded
             Object.keys(this.tilesInScene).forEach(tileId => {
                 if (!_self.tileGrid.isVisible(tileId)) {
                     this.group.remove(_self.tilesInScene[tileId]);

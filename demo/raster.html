@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GEOV RasterTileLayer Demo</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #001;
+        }
+
+        #main {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main"></div>
+
+    <script src="http://localhost/three.js/build/three.min.js"></script>
+    <script src="http://localhost/geov.js/dist/geov.js"></script>
+    <script src="../build/geov.tilelayer.js"></script>
+    <script>
+        const earth = new geov.Earth(document.getElementById('main'), {});
+        earth.addLayer(new geov.RasterTileLayer('raster', {
+            type: 'bing'
+        }));
+    </script>
+</body>
+
+</html>

@@ -1,35 +1,35 @@
 {
-  "name": "geov.rastertile",
+  "name": "geov.tilelayer",
   "version": "0.0.1",
   "description": "",
-  "main": "src/TileLayer.js",
+  "main": "index.js",
   "scripts": {
     "watch": "rollup -c -w",
     "build": "rollup -c",
-    "prepublish": "rollup -c && uglifyjs build/geov.rastertile.js -cm --preamble > build/geov.rastertile.min.js",
+    "prepublish": "rollup -c && uglifyjs build/geov.tilelayer.js -cm --preamble > build/geov.tilelayer.min.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
     "package.json",
     "LICENSE",
     "README.md",
-    "build/geov.rastertile.js",
-    "build/geov.rastertile.min.js"
+    "build/geov.tilelayer.js",
+    "build/geov.tilelayer.min.js"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hanmag/geov.rastertile.git"
+    "url": "git+https://github.com/hanmag/geov.tilelayer.git"
   },
   "keywords": [
     "geov.js",
-    "rastertile"
+    "tilelayer"
   ],
   "author": "Daemon",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hanmag/geov.rastertile/issues"
+    "url": "https://github.com/hanmag/geov.tilelayer/issues"
   },
-  "homepage": "https://github.com/hanmag/geov.rastertile#readme",
+  "homepage": "https://github.com/hanmag/geov.tilelayer#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-external-helpers": "^6.22.0",

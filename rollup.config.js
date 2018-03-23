@@ -2,7 +2,7 @@ import babel from 'rollup-plugin-babel';
 import localResolve from 'rollup-plugin-local-resolve';
 
 export default {
-    input: 'src/TileLayer.js',
+    input: 'index.js',
     globals: {
         three: 'THREE',
         geov: 'geov'
@@ -13,7 +13,7 @@ export default {
     output: [{
         format: 'umd',
         name: 'geov',
-        file: 'build/geov.rastertile.js',
+        file: 'build/geov.tilelayer.js',
         sourcemap: false,
         extend: true
     }],
