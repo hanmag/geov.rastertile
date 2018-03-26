@@ -9,7 +9,7 @@ var TILE_CACHE = {};
 // 切片访问队列，记录切片访问次序
 var TILEID_QUEUE = [];
 // 最大可维护切片数量
-var MAX_TILE_SIZE = 900;
+var MAX_TILE_SIZE = 500;
 
 // 更新最近访问列表顺序
 function moveToEnd(tileId) {
@@ -333,6 +333,9 @@ function reviseRowAndCol(size, row, col) {
         col += sizeh;
     }
     col = (col + size2) % size;
+    while (col < 0) {
+        col += size;
+    }
 
     return [row, col];
 }
@@ -348,16 +351,16 @@ function calcRange(centerTile, pitch, bearing) {
     // 转向角权值 ( 0 ~ 1 )，视线指向赤道时转向角权值小，视线指向两极时转向角权值大
     var bearingRatio = 0.5 + Math.cos(bearing) * (0.5 - (centerTile.row + 0.5) / centerTile.size);
     // 可见行数
-    var rowCount = Math.round(1 + zoomRatio * 2 + offsetY * 4 + pitchRatio * 4 + bearingRatio * 1.2 + Math.abs(Math.sin(bearing)) * 1.2);
+    var rowCount = Math.round(1 + zoomRatio * 1 + offsetY * 2 + pitchRatio * 4 + bearingRatio * 1.2 + Math.abs(Math.sin(bearing)) * 1.2);
     // 可见列数
-    var colCount = Math.round(1 + zoomRatio * 2.5 + offsetY * 4 + pitchRatio * 3 + bearingRatio * 1.2 + Math.abs(Math.cos(bearing)) * 1.2);
+    var colCount = Math.round(1 + zoomRatio * 1.5 + offsetY * 2 + pitchRatio * 3 + bearingRatio * 1.2 + Math.abs(Math.cos(bearing)) * 1.2);
     // 中心行列号
     var centerRow = centerTile.row;
     var centerCol = centerTile.col;
     var row_cols = [[centerRow, centerCol]];
     var tileIds = [centerRow + '-' + centerCol];
     var pushRowCol = function pushRowCol(row_col) {
-        if (tileIds.indexOf(row_col[0] + '-' + row_col[1]) < 0) {
+        if (row_cols.length < 40 && tileIds.indexOf(row_col[0] + '-' + row_col[1]) < 0) {
             tileIds.push(row_col[0] + '-' + row_col[1]);
             row_cols.push(row_col);
         }
@@ -456,14 +459,13 @@ function mapZoomToTileZoom(mapZoom) {
 var TileLayer = function (_geov$Layer) {
     inherits(TileLayer, _geov$Layer);
 
-    function TileLayer(id, options) {
+    function TileLayer(id) {
         classCallCheck(this, TileLayer);
 
         var _this = possibleConstructorReturn(this, (TileLayer.__proto__ || Object.getPrototypeOf(TileLayer)).call(this, id));
 
         _this.tilesInScene = {};
         _this.group = new THREE.Group();
-        tileProvider.setMapType(options.type);
         return _this;
     }
 
@@ -492,7 +494,7 @@ var TileLayer = function (_geov$Layer) {
                 var radian = this.earth.getRadian();
                 var pitch = this.earth.getPitch();
                 var bearing = this.earth.getBearing();
-                var result = this.tileGrid.getVisibleTiles(Math.round(mapZoomToTileZoom(zoom)), radian.y, radian.x, pitch, bearing);
+                var result = this.tileGrid.getVisibleTiles(Math.ceil(mapZoomToTileZoom(zoom)), radian.y, radian.x, pitch, bearing);
 
                 if (result) {
                     if (this.tiles) {
@@ -520,7 +522,6 @@ var TileLayer = function (_geov$Layer) {
 
             if (!this.needUpdate) return;
 
-            // add
             if (!this.tiles) return;
             var loadingCount = 0;
             this.tiles.forEach(function (tile) {
@@ -558,14 +559,18 @@ var TileLayer = function (_geov$Layer) {
 }(geov.Layer);
 
 var RasterTileLayer = function (_TileLayer) {
-  inherits(RasterTileLayer, _TileLayer);
+    inherits(RasterTileLayer, _TileLayer);
 
-  function RasterTileLayer() {
-    classCallCheck(this, RasterTileLayer);
-    return possibleConstructorReturn(this, (RasterTileLayer.__proto__ || Object.getPrototypeOf(RasterTileLayer)).apply(this, arguments));
-  }
+    function RasterTileLayer(id, options) {
+        classCallCheck(this, RasterTileLayer);
 
-  return RasterTileLayer;
+        var _this = possibleConstructorReturn(this, (RasterTileLayer.__proto__ || Object.getPrototypeOf(RasterTileLayer)).call(this, id));
+
+        tileProvider.setMapType(options.type);
+        return _this;
+    }
+
+    return RasterTileLayer;
 }(TileLayer);
 
 var VectorTileLayer = function (_TileLayer) {

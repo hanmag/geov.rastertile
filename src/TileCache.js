@@ -3,7 +3,7 @@ const TILE_CACHE = {};
 // 切片访问队列，记录切片访问次序
 let TILEID_QUEUE = [];
 // 最大可维护切片数量
-const MAX_TILE_SIZE = 900;
+const MAX_TILE_SIZE = 500;
 
 // 更新最近访问列表顺序
 function moveToEnd(tileId) {

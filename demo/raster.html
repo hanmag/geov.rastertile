@@ -26,7 +26,9 @@
     <script src="http://localhost/geov.js/dist/geov.js"></script>
     <script src="../build/geov.tilelayer.js"></script>
     <script>
-        const earth = new geov.Earth(document.getElementById('main'), {});
+        const earth = new geov.Earth(document.getElementById('main'), {
+            atmosphere: 'http://localhost/geov.js/textures/fair_clouds_4k.png'
+        });
         earth.addLayer(new geov.RasterTileLayer('raster', {
             type: 'bing'
         }));

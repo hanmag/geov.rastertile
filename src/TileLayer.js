@@ -10,12 +10,11 @@ function mapZoomToTileZoom(mapZoom) {
 }
 
 export default class TileLayer extends geov.Layer {
-    constructor(id, options) {
+    constructor(id) {
         super(id);
 
         this.tilesInScene = {};
         this.group = new THREE.Group();
-        tileProvider.setMapType(options.type);
     }
 
     load() {
@@ -34,7 +33,7 @@ export default class TileLayer extends geov.Layer {
             const radian = this.earth.getRadian();
             const pitch = this.earth.getPitch();
             const bearing = this.earth.getBearing();
-            const result = this.tileGrid.getVisibleTiles(Math.round(mapZoomToTileZoom(zoom)),
+            const result = this.tileGrid.getVisibleTiles(Math.ceil(mapZoomToTileZoom(zoom)),
                 radian.y, radian.x, pitch, bearing);
 
             if (result) {
@@ -60,7 +59,6 @@ export default class TileLayer extends geov.Layer {
     update() {
         if (!this.needUpdate) return;
 
-        // add
         if (!this.tiles) return;
         let loadingCount = 0;
         this.tiles.forEach(tile => {
