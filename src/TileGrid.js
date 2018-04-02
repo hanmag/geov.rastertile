@@ -148,5 +148,9 @@ export default {
 
         this.tilesInfo = makeTilesInfo(tileInfo, calcRange(tileInfo, pitch, bearing));
         return this.tilesInfo;
+    },
+
+    locateTileInTile: function (tileInfo) {
+
     }
 }
